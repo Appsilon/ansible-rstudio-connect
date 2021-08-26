@@ -8,7 +8,7 @@
 
 - name: test rstudio-connect installation
   shell: >
-    wget http://localhost:8787/auth-sign-in -O /dev/null -S --quiet 2>&1
+    wget http://localhost:{{ rstudio_connect_www_port }} -O /dev/null -S --quiet 2>&1
     | grep -q '200 OK'
     && (echo 'Availability test: pass' && exit 0)
     || (echo 'Availability test: fail' && exit 1)
