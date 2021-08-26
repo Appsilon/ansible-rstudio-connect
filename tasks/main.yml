@@ -16,3 +16,4 @@
     - configuration
     - rstudio-connect
     - rstudio-connect-install
+  notify: restart rstudio-connect
