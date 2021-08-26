@@ -1,0 +1,8 @@
+# defaults file
+---
+rstudio_connect_version: "1.9.0.1"
+rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
+rstudio_connect_install: []
+
+rstudio_connect_www_port: 3939
+rstudio_connect_www_address: 0.0.0.0

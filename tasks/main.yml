@@ -1,0 +1,18 @@
+# tasks file
+---
+- name: include variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "_{{ ansible_distribution_release }}.yml"
+    - "_{{ ansible_distribution | lower }}.yml"
+    - _default.yml
+  tags:
+    - configuration
+    - rstudio-connect
+    - rstudio-connect-include-variables
+
+- include: install.yml
+  tags:
+    - configuration
+    - rstudio-connect
+    - rstudio-connect-install

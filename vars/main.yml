@@ -1,0 +1,10 @@
+# vars file
+---
+rstudio_connect_dependencies:
+  - curl
+rstudio_connect_downloads_path: /var/lib/ansible/rstudio-connect/downloads
+rstudio_connect_machine_map:
+  i686: i386
+  i386: i386
+  x86_64: amd64
+  amd64: amd64

@@ -1,0 +1,4 @@
+# vars file
+---
+rstudio_connect_install:
+  - r-base
