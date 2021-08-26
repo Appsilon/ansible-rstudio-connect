@@ -1,0 +1,10 @@
+# test file
+---
+- hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - ../../
+  post_tasks:
+    - name: include tasks
+      include: "{{ playbook_dir }}/tasks/post.yml"
