@@ -16,4 +16,4 @@ RUN pip install ansible-core==${ANSIBLE_VERSION}
 COPY . /etc/ansible/roles/ansible-role
 WORKDIR /etc/ansible/roles/ansible-role
 
-RUN ansible-playbook -i localhost, tests/test.yml --connection=local
+RUN ansible-playbook -i localhost, tests/test.yml --connection=local -vv
