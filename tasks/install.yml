@@ -1,0 +1,47 @@
+# tasks file
+---
+- name: install | dependencies
+  apt:
+    name: "{{ rstudio_connect_dependencies }}"
+    state: "{{ apt_install_state | default('latest') }}"
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+  tags:
+    - rstudio-connect-install-dependencies
+
+- name: install | additional
+  apt:
+    name: "{{ rstudio_connect_install }}"
+    state: "{{ apt_install_state | default('latest') }}"
+  tags:
+    - rstudio-connect-install-additional
+
+- name: install | create (download) directory
+  file:
+    path: "{{ rstudio_connect_downloads_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - rstudio-connect-install-download
+    - rstudio-connect-install-download-directory
+
+- name: install | download deb
+  command: >
+    curl --silent --show-error --fail --location
+    {{ rstudio_connect_download_url }}
+    -o {{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}-{{ rstudio_connect_machine_map[ansible_machine] }}.deb
+  args:
+    creates: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}-{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
+    warn: false
+  tags:
+    - rstudio-connect-install-download
+    - rstudio-connect-install-download-deb
+
+- name: install | install deb
+  apt:
+    deb: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}-{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
+  tags:
+    - rstudio-connect-install-install
+    - rstudio-connect-install-install-deb
