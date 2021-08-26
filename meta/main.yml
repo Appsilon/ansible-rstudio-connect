@@ -1,7 +1,7 @@
 # meta file
 ---
 galaxy_info:
-  namespace: rstudio
+  namespace: appsilon
   role_name: rstudio_connect
   author: shmileee
   company: Appsilon
