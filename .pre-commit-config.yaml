@@ -1,3 +1,4 @@
+---
 repos:
   - repo: git://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
@@ -13,7 +14,7 @@ repos:
         args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/jorisroovers/gitlint
-    rev:  v0.15.1
+    rev: v0.15.1
     hooks:
       - id: gitlint
         args: [--contrib=contrib-title-conventional-commits, --ignore=body-is-missing, --msg-filename]
@@ -35,3 +36,13 @@ repos:
     rev: v4.3.7
     hooks:
       - id: ansible-lint
+
+  - repo: git://github.com/adrienverge/yamllint
+    rev: v1.26.3
+    hooks:
+      - id: yamllint
+        name: yamllint
+        description: This hook runs yamllint.
+        entry: yamllint
+        language: python
+        types: [file, yaml]
