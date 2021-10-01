@@ -17,3 +17,19 @@
     - rstudio-connect
     - rstudio-connect-install
   notify: restart rstudio-connect
+
+- include: configure.yml
+  tags:
+    - configuration
+    - rstudio-connect
+    - rstudio-connect-configure
+
+- name: start and enable service
+  service:
+    name: rstudio-connect
+    state: "{{ service_default_state | default('started') }}"
+    enabled: "{{ service_default_enabled | default(true) | bool }}"
+  tags:
+    - configuration
+    - rtudio-connect
+    - rstudio-connect-start-enable-service
