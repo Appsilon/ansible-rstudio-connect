@@ -25,7 +25,7 @@
   shell: |
     /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
   notify: restart rstudio-connect
-  when: rstudio_connect_license is defined and rstudio_connect_license != ""
+  when: rstudio_connect_license|d()
   register: license_output
   tags:
     - rstudio-connect-configure-migration
