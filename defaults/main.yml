@@ -23,6 +23,6 @@ rstudio_connect_authentication_override: |
 
 rstudio_connect_package_repos:
   - name: CRAN
-    url: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
+    url: "https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest"
   - name: RSPM
-    url: https://packagemanager.rstbudio.com/cran/__linux__/bionic/latest
+    url: "https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest"
