@@ -1,0 +1,31 @@
+---
+- name: configure | update (server) configuration file
+  template:
+    src: etc/rstudio-connect/rstudio-connect.gcfg.j2
+    dest: /etc/rstudio-connect/rstudio-connect.gcfg
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart rstudio-connect
+  tags:
+    - rstudio-connect-configure-server
+
+- name: configure | update (server) migration file
+  template:
+    src: etc/rstudio-connect/rstudio-connect-migration.gcfg.j2
+    dest: /etc/rstudio-connect/rstudio-connect-migration.gcfg
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart rstudio-connect
+  tags:
+    - rstudio-connect-configure-migration
+
+- name: configure | activate server license
+  shell: |
+    /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
+  notify: restart rstudio-connect
+  when: rstudio_connect_license|d()
+  register: license_output
+  tags:
+    - rstudio-connect-configure-migration

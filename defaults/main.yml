@@ -5,4 +5,24 @@ rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.
 rstudio_connect_install: []
 
 rstudio_connect_www_port: 3939
-rstudio_connect_www_address: 0.0.0.0
+rstudio_connect_config_override: ""
+
+rstudio_connect_licensing_override: |
+  [Licensing]
+  ExpirationUIWarning = false
+
+rstudio_connect_http_override: |
+  [HTTP]
+  ; RStudio Connect will listen on this network address for HTTP connections.
+  Listen = :{{ rstudio_connect_www_port }}
+
+rstudio_connect_authentication_override: |
+  [Authentication]
+  ; Specifies the type of user authentication.
+  Provider = "password"
+
+rstudio_connect_package_repos:
+  - name: CRAN
+    url: "https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest"
+  - name: RSPM
+    url: "https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest"
