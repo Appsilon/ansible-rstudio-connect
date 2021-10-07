@@ -1,7 +1,7 @@
 # Ansible Role: rstudio-connect
 
 [![CI](https://github.com/Appsilon/ansible-rstudio-connect/workflows/CI/badge.svg)](https://github.com/Appsilon/ansible-rstudio-connect/actions/workflows/ci.yml)
-[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-shmileee.rstudio_connect-blue.svg)](https://galaxy.ansible.com/shmileee/rstudio_connect/)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-appsilon.rstudio_connect-blue.svg)](https://galaxy.ansible.com/appsilon/rstudio_connect/)
 
 Set up (the latest version of) [RStudio Connect](https://www.rstudio.com/products/connect/) in Debian-like systems.
 
