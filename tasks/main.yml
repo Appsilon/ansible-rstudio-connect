@@ -24,6 +24,10 @@
     - rstudio-connect
     - rstudio-connect-configure
 
+- include: install-r.yml
+  tags:
+    - r-version-install
+
 - name: start and enable service
   service:
     name: rstudio-connect
