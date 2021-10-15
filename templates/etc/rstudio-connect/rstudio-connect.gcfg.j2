@@ -1,19 +1,9 @@
 {{ ansible_managed | comment }}
 
+
 {% if rstudio_connect_config_override is defined and rstudio_connect_config_override|length %}
 {{ rstudio_connect_config_override }}
 {% else %}
-{% if rstudio_connect_http_override is defined and rstudio_connect_http_override|length %}
-{{ rstudio_connect_http_override }}
-{% endif %}
-{% if rstudio_connect_authentication_override is defined and rstudio_connect_authentication_override|length %}
-{{ rstudio_connect_authentication_override }}
-{% endif %}
-{% if rstudio_connect_package_repos is defined and rstudio_connect_package_repos|length %}
-{% for repo in rstudio_connect_package_repos %}
-[RPackageRepository "{{ repo["name"] }}"]
-URL = {{ repo["url"] }}
-
-{% endfor %}
-{% endif %}
+{% from "macros/gcfg_encode_macro.j2" import gcfg_encode with context -%}
+{{ gcfg_encode(rstudio_connect_config) }}
 {% endif %}
