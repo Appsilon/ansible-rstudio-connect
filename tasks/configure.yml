@@ -1,4 +1,18 @@
 ---
+
+- name: configure | write encryption key to file
+  copy:
+    content: "{{ rstudio_encryption_key | trim }}"
+    dest: "{{ rstudio_connect_encryption_key_location }}"
+    owner: root
+    group: root
+    mode: 0600
+  when:
+    - rstudio_encryption_key is defined
+    - rstudio_encryption_key|length
+  tags:
+    - rstudio-connect-encryption-key
+
 - name: configure | update (server) configuration file
   template:
     src: etc/rstudio-connect/rstudio-connect.gcfg.j2
