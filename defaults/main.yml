@@ -6,6 +6,9 @@ rstudio_connect_install: []
 rstudio_connect_www_port: 3939
 rstudio_connect_config_override: ""
 
+rstudio_encryption_key: ""
+rstudio_connect_encryption_key_location: "/var/lib/rstudio-connect/db/secret.key"
+
 rstudio_connect_config:
   HTTP:
     Listen: :{{ rstudio_connect_www_port }}
