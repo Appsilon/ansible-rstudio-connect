@@ -13,6 +13,17 @@
   tags:
     - rstudio-connect-encryption-key
 
+- name: link systemd default environment file to /etc/environment
+  file:
+    src: /etc/environment
+    dest: /etc/default/rstudio-connect
+    state: link
+    owner: root
+    group: root
+  notify: restart rstudio-connect
+  tags:
+    - rstudio-connect-configure-environment-file
+
 - name: configure | update (server) configuration file
   template:
     src: etc/rstudio-connect/rstudio-connect.gcfg.j2
@@ -42,4 +53,4 @@
   when: rstudio_connect_license|d()
   register: license_output
   tags:
-    - rstudio-connect-configure-migration
+    - rstudio-connect-configure-license
