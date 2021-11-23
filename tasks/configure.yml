@@ -52,5 +52,6 @@
   notify: restart rstudio-connect
   when: rstudio_connect_license|d()
   register: license_output
+  no_log: true
   tags:
     - rstudio-connect-configure-license
