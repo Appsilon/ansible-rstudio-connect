@@ -7,6 +7,7 @@ r_versions:
   - 4.0.0
   - 3.6.3
   - 3.5.3
+  - 3.5.0
 rstudio_connect_downloads_path: /var/lib/ansible/rstudio-connect/downloads
 rstudio_connect_machine_map:
   i686: i386
