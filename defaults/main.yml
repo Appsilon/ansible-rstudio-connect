@@ -1,6 +1,6 @@
 # defaults file
 ---
-rstudio_connect_version: "2021.10.0"
+rstudio_connect_version: "2021.11.1"
 rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
 rstudio_connect_install: []
 rstudio_connect_www_port: 3939
