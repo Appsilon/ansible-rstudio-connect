@@ -1,10 +1,15 @@
 # defaults file
 ---
+
 rstudio_connect_version: "2021.12.1"
 rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
 rstudio_connect_install: []
 rstudio_connect_www_port: 3939
 rstudio_connect_config_override: ""
+
+rstudio_connect_pro_drivers_install: true
+rstudio_connect_pro_drivers_version: "2021.10.0"
+rstudio_connect_pro_drivers_dependencies: ["unixodbc", "unixodbc-dev"]
 
 rstudio_encryption_key: ""
 rstudio_connect_encryption_key_location: "/var/lib/rstudio-connect/db/secret.key"
