@@ -13,6 +13,17 @@
   tags:
     - rstudio-connect-encryption-key
 
+- name: configure | create (SSO metadata xml) file
+  copy:
+    content: "{{ rstudio_connect_sso_saml_metadata_content_b64_encoded | b64decode }}"
+    dest: "{{ rstudio_connect_sso_saml_metadata_file_path }}"
+    owner: root
+    group: root
+    mode: 0600
+  when:
+    - rstudio_connect_sso_saml_metadata_content_b64_encoded|d()
+    - rstudio_connect_sso_saml_metadata_file_path|d()
+
 - name: link systemd default environment file to /etc/environment
   file:
     src: /etc/environment
