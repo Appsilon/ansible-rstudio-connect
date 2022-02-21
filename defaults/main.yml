@@ -3,9 +3,13 @@
 
 rstudio_connect_version: "2021.12.1"
 rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
+
 rstudio_connect_install: []
 rstudio_connect_www_port: 3939
 rstudio_connect_config_override: ""
+
+rstudio_connect_sso_saml_metadata_file_path: ""
+rstudio_connect_sso_saml_metadata_content_b64_encoded: ""
 
 rstudio_connect_pro_drivers_install: true
 rstudio_connect_pro_drivers_version: "2021.10.0"
