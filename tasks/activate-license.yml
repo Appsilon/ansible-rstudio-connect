@@ -21,7 +21,7 @@
     /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
   notify: restart rstudio-connect
   register: license_output
-  when: rstudio_connect_license_offline_key_b64_encoded|d()
+  when: rstudio_connect_license|d()
   no_log: true
 
 ...
