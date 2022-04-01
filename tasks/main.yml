@@ -32,10 +32,6 @@
 - include: install-drivers.yml
   when: rstudio_connect_pro_drivers_install
 
-- include: activate-license.yml
-  when: rstudio_connect_license|d() or
-        rstudio_connect_license_offline_key_b64_encoded|d()
-
 - name: start and enable service
   service:
     name: rstudio-connect
