@@ -2,7 +2,7 @@
 ---
 
 - name: include variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "_{{ ansible_distribution_release }}.yml"
     - "_{{ ansible_distribution | lower }}.yml"
@@ -33,7 +33,7 @@
   when: rstudio_connect_pro_drivers_install
 
 - name: start and enable service
-  service:
+  ansible.builtin.service:
     name: rstudio-connect
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"
