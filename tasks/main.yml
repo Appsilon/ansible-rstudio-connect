@@ -25,10 +25,6 @@
     - rstudio-connect
     - rstudio-connect-configure
 
-- include: install-r.yml
-  tags:
-    - r-version-install
-
 - include: install-drivers.yml
   when: rstudio_connect_pro_drivers_install
 
