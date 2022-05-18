@@ -1,7 +1,7 @@
 # defaults file
 ---
 
-rstudio_connect_version: "2021.12.1"
+rstudio_connect_version: "2022.04.2"
 rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
 
 rstudio_connect_install: []
