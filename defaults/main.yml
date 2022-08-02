@@ -24,6 +24,6 @@ rstudio_connect_config:
   Authentication:
     Provider: "password"
   'RPackageRepository "CRAN"':
-    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest
+    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
   'RPackageRepository "RSPM"':
-    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename|lower }}/latest
+    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
