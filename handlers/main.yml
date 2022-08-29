@@ -1,6 +1,6 @@
 # handlers file
 ---
-- name: restart rstudio-connect
+- name: Restart rstudio-connect
   ansible.builtin.service:
     name: rstudio-connect
     state: restarted
