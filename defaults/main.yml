@@ -27,3 +27,6 @@ rstudio_connect_config:
     URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
   'RPackageRepository "RSPM"':
     URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
+
+rstudio_connect_enable_python: false
+rstudio_connect_python_executables: []
