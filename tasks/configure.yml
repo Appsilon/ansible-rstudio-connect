@@ -70,7 +70,7 @@
     - name: License activation (offline) | activate using key file  # noqa no-changed-when
       ansible.builtin.shell: |
         /opt/rstudio-connect/bin/license-manager activate-file /etc/rstudio-connect/activation-key.lic
-  when: rstudio_connect_license_offline_key_b64_encoded|d()
+  when: rstudio_connect_license_offline_key_b64_encoded | d()
   notify: restart rstudio-connect
   no_log: true
 
@@ -79,5 +79,5 @@
     /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
   notify: restart rstudio-connect
   register: license_output
-  when: rstudio_connect_license|d()
+  when: rstudio_connect_license | d()
   no_log: true
