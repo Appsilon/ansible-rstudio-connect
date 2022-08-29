@@ -1,13 +1,13 @@
 ---
 
-- name: install pro-drivers | install dependencies
+- name: Install pro-drivers | install dependencies
   ansible.builtin.apt:
     name: "{{ rstudio_connect_pro_drivers_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
 
-- name: install pro-drivers | download deb
+- name: Install pro-drivers | download deb
   ansible.builtin.get_url:
     url: "{{ rstudio_connect_pro_drivers_download_url }}"
     dest: "{{ rstudio_connect_downloads_path }}/rstudio-drivers_{{ rstudio_connect_pro_drivers_version }}_{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
@@ -15,11 +15,11 @@
     owner: root
     group: root
 
-- name: install pro-drivers | install deb
+- name: Install pro-drivers | install deb
   ansible.builtin.apt:
     deb: "{{ rstudio_connect_downloads_path }}/rstudio-drivers_{{ rstudio_connect_pro_drivers_version }}_{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
 
-- name: configure pro-drivers | create odbcinst.ini
+- name: Configure pro-drivers | create odbcinst.ini
   ansible.builtin.copy:
     src: /opt/rstudio-drivers/odbcinst.ini.sample
     dest: /etc/odbcinst.ini
