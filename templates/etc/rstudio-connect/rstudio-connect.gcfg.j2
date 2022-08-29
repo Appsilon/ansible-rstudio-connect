@@ -7,3 +7,11 @@
 {% from "macros/gcfg_encode_macro.j2" import gcfg_encode with context -%}
 {{ gcfg_encode(rstudio_connect_config) }}
 {% endif %}
+
+{% if rstudio_connect_enable_python %}
+[Python]
+Enabled = true
+{% for exec in rstudio_connect_python_executables %}
+Executable = {{ exec }}
+{% endfor %}
+{% endif %}
