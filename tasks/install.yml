@@ -1,6 +1,6 @@
 # tasks file
 ---
-- name: install | dependencies
+- name: Install | dependencies
   ansible.builtin.apt:
     name: "{{ rstudio_connect_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
@@ -9,14 +9,14 @@
   tags:
     - rstudio-connect-install-dependencies
 
-- name: install | additional
+- name: Install | additional
   ansible.builtin.apt:
     name: "{{ rstudio_connect_install }}"
     state: "{{ apt_install_state | default('latest') }}"
   tags:
     - rstudio-connect-install-additional
 
-- name: install | create (download) directory
+- name: Install | create (download) directory
   ansible.builtin.file:
     path: "{{ rstudio_connect_downloads_path }}"
     state: directory
@@ -27,7 +27,7 @@
     - rstudio-connect-install-download
     - rstudio-connect-install-download-directory
 
-- name: install | download deb
+- name: Install | download deb
   ansible.builtin.command: >
     curl --silent --show-error --fail --location
     {{ rstudio_connect_download_url }}
@@ -39,7 +39,7 @@
     - rstudio-connect-install-download
     - rstudio-connect-install-download-deb
 
-- name: install | install deb
+- name: Install | install deb
   ansible.builtin.apt:
     deb: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}-{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
   tags:
