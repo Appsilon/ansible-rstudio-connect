@@ -17,7 +17,7 @@
     - configuration
     - rstudio-connect
     - rstudio-connect-install
-  notify: restart rstudio-connect
+  notify: Restart rstudio-connect
 
 - include: configure.yml
   tags:
