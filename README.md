@@ -30,11 +30,36 @@ None
 
 ## Example
 
+Basic configuration:
+
 ```yaml
 ---
 - hosts: all
   roles:
-    - rstudio-connect
+    - appsilon.rstudio_connect
+```
+
+Playbook for installing additional Python versions with  [ansible-python-install](https://github.com/Appsilon/ansible-python-install) and configuring RStudio Connect to use them:
+
+```yaml
+---
+- hosts: all
+  become: true
+  vars:
+    python_versions:
+      - 3.10.6
+      - 3.7.8
+      - 3.8.6
+    rstudio_connect_enable_python: true
+    rstudio_connect_python_executables:
+      - /opt/python/3.10.6/bin/python3
+      - /opt/python/3.7.8/bin/python3
+      - /opt/python/3.8.6/bin/python3
+    rstudio_connect_install:
+      - r-base
+  roles:
+    - appsilon.rstudio_connect
+    - appsilon.python_install
 ```
 
 ## License
