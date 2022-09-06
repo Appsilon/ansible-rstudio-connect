@@ -58,8 +58,8 @@ Playbook for installing additional Python versions with  [ansible-python-install
     rstudio_connect_install:
       - r-base
   roles:
-    - appsilon.rstudio_connect
     - appsilon.python_install
+    - appsilon.rstudio_connect
 ```
 
 ## License
