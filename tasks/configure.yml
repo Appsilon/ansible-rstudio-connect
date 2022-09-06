@@ -35,6 +35,23 @@
   tags:
     - rstudio-connect-configure-environment-file
 
+- name: Configure | find directories with Python
+  ansible.builtin.find:
+    paths: "{{ python_main_directory }}"
+    recurse: false
+    file_type: directory
+  when: rstudio_connect_python_executables is not defined or rstudio_connect_python_executables | length == 0
+  register: python_paths
+  tags:
+    - rstudio-connect-configure-discover-python-executables
+
+- name: Configure | set rstudio_connect_python_executables
+  ansible.builtin.set_fact:
+    rstudio_connect_python_executables: "{{ python_paths.files | map(attribute='path') | product([python_sufix_bin]) | map('join') }}"
+  when: rstudio_connect_python_executables is not defined or rstudio_connect_python_executables | length == 0
+  tags:
+    - rstudio-connect-configure-discover-python-executables
+
 - name: Configure | update (server) configuration file
   ansible.builtin.template:
     src: etc/rstudio-connect/rstudio-connect.gcfg.j2
