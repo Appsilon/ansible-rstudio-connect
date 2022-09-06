@@ -30,3 +30,4 @@ rstudio_connect_config:
 
 rstudio_connect_enable_python: false
 rstudio_connect_python_executables: []
+python_versions: []
