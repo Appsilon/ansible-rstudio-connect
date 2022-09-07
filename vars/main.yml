@@ -8,5 +8,3 @@ rstudio_connect_machine_map:
   i386: i386
   x86_64: amd64
   amd64: amd64
-python_main_directory: /opt/python/
-python_sufix_bin: /bin/python3
