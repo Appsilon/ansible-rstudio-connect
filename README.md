@@ -19,7 +19,7 @@ Set up (the latest version of) [RStudio Connect](https://www.rstudio.com/product
 * `rstudio_connect_config_override` [default: `""`]: If you know what you're doing, you can override whole `rstudio-connect.gcfg` config.
 * `rstudio_connect_license`: If specified, RStudio Connect will attempt to activate the supplied license key.
 * `rstudio_connect_enable_python` [default: `false`]: If specified, the configuration file will contain Python section with Enabled set to `true`.
-* `rstudio_connect_python_executables` [default: `[]`]: List of paths to Python executables (e.g. `[/opt/python/3.10.6/bin/python3]`). Additional Python versions can be installed with [ansible-python-install role](https://github.com/Appsilon/ansible-python-install).
+* `rstudio_connect_python_executables` [default: `[]`]: List of paths to Python executables (e.g. `[/opt/python/3.10.6/bin/python3]`). Additional Python versions can be installed with [ansible-python-install role](https://github.com/Appsilon/ansible-python-install). If this list is empty, the role will search for Python executables in `python_main_directory`. Result of the searching can be filtered with `python_versions` (only matching versions will be configured).
 
 For the rest of the default variables, see
 [./defaults/main.yml](./defaults/main.yml).
@@ -51,10 +51,6 @@ Playbook for installing additional Python versions with  [ansible-python-install
       - 3.7.8
       - 3.8.6
     rstudio_connect_enable_python: true
-    rstudio_connect_python_executables:
-      - /opt/python/3.10.6/bin/python3
-      - /opt/python/3.7.8/bin/python3
-      - /opt/python/3.8.6/bin/python3
     rstudio_connect_install:
       - r-base
   roles:

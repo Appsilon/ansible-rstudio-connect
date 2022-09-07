@@ -44,16 +44,21 @@
         file_type: directory
       register: python_paths
 
-    - name: Configure | set rstudio_connect_python_executables
+    - name: Configure | set discovered_python_executables
       ansible.builtin.set_fact:
+        # [objects] -> ['/opt/python/3.10.6',...] ->  [['/opt/python/3.10.6','/bin/python3'],...] -> ['/opt/python/3.10.6/bin/python3',...]
         discovered_python_executables: "{{ python_paths.files | map(attribute='path') | product([python_sufix_bin]) | map('join') }}"
 
+    # admin specified python_versions - get only matching executable paths
     - name: Configure | set (filtered) executables
       ansible.builtin.set_fact:
         python_executables: "{{ python_executables | d([]) + [item] }}"
       loop: "{{ discovered_python_executables }}"
+      # spliting item: '/opt/python/3.10.6/bin/python3' -> ['', '3.10.6/bin/python3'] ->
+      # -> '3.10.6/bin/python3' -> ['3.10.6', ''] -> '3.10.6'
       when: python_versions | length != 0 and (item.split(python_main_directory)[1].split(python_sufix_bin)[0] in python_versions)
 
+    # admin not specified python_versions - get all executable paths
     - name: Configure | set (unfiltered) executables
       ansible.builtin.set_fact:
         python_executables: "{{ discovered_python_executables }}"
@@ -63,6 +68,7 @@
       ansible.builtin.set_fact:
         rstudio_connect_python_executables: "{{ python_executables }}"
 
+  # discover Python executables only if admin doesn't specify concrete paths in rstudio_connect_python_executables
   when: rstudio_connect_enable_python and (rstudio_connect_python_executables is not defined or rstudio_connect_python_executables | length == 0)
   tags:
     - rstudio-connect-configure-discover-python-executables
