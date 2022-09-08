@@ -61,7 +61,7 @@ jobs:
 
       - name: Run Molecule tests
         run: |
-          molecule test
+          molecule test --all
         env:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
