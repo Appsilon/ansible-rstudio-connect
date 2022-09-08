@@ -1,0 +1,10 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Include vars for Python
+      ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/with-python.yml"
+  tasks:
+    - name: include tasks
+      include: "{{ playbook_dir }}/../../tests/tasks/post-with-python.yml"
