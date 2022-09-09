@@ -30,4 +30,3 @@ rstudio_connect_config:
 
 python_versions: []
 rstudio_connect_python_executables: []
-rstudio_connect_enable_python: "{{ true if (python_versions | length or rstudio_connect_python_executables | length) else false }}"

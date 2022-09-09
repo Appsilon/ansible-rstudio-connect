@@ -8,7 +8,7 @@
 {{ gcfg_encode(rstudio_connect_config) }}
 {% endif %}
 
-{% if rstudio_connect_enable_python %}
+{% if python_versions | length or rstudio_connect_python_executables | length %}
 [Python]
 Enabled = true
 {% if python_versions is defined and python_versions | length %}
