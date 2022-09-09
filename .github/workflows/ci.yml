@@ -25,6 +25,13 @@ jobs:
       - name: Install test dependencies
         run: pip install ansible-lint[community,yamllint]
 
+      - name: Install roles required for tests
+        run: |
+          for req in $(find ./molecule/ -name 'requirements.yml'); do
+            echo Requirements file: $req
+            ansible-galaxy install -r $req
+          done
+
       - name: Lint code
         run: |
           yamllint .
