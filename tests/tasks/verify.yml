@@ -1,6 +1,6 @@
-# post test file
+# verify file
 ---
-- name: Test rstudio-connect installation
+- name: Verify | rstudio-connect healthcheck
   ansible.builtin.uri:
     url: http://localhost:3939/__ping__
     status_code:

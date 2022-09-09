@@ -1,30 +1,26 @@
-# post test file for with-python scenario
+# verify file for with-python scenario
 ---
-- name: Test rstudio-connect installation
-  ansible.builtin.uri:
-    url: http://localhost:3939/__ping__
-    status_code:
-      - 200
-      - 402
-
-- name: Read RStudio Connect config file
+- name: Verify | read RStudio Connect config file
   ansible.builtin.command: cat /etc/rstudio-connect/rstudio-connect.gcfg
   changed_when: false
   register: connect_config
+  tags:
+    - verify-python
 
-- name: Debug
-  ansible.builtin.debug:
-    msg: "{{ connect_config.stdout }}"
-
-- name: Assert Python is enabled
+- name: Verify | assert that Python is enabled in config file
   ansible.builtin.assert:
     that:
       - connect_config.stdout.find("[Python]\nEnabled = true") != -1
     fail_msg: "Python is disabled"
+  tags:
+    - verify-python
 
-- name: Assert Python executables are present
+- name: Verify | assert that Python executables are present in config file
   ansible.builtin.assert:
     that:
       - connect_config.stdout.find("Executable = /opt/python/{{ item }}/bin/python3") != -1
     fail_msg: "Executable for {{ item }} is not set"
   loop: "{{ python_versions }}"
+  tags:
+    - verify-python
+    - verify-python-var-python-versions
