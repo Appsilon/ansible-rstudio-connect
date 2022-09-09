@@ -6,5 +6,12 @@
     - name: Include vars for Python
       ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/with-python.yml"
   tasks:
-    - name: include tasks
-      include: "{{ playbook_dir }}/../../tests/tasks/post-with-python.yml"
+    - name: Include verify tasks
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/../../tests/tasks/verify.yml"
+    - name: Include Python verify tasks (var python_versions)
+      ansible.builtin.include_tasks:
+        file: "{{ playbook_dir }}/../../tests/tasks/verify-python.yml"
+        apply:
+          tags:
+            - verify-python
+            - verify-python-var-python-versions
