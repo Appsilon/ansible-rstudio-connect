@@ -1,0 +1,8 @@
+# common verify file - tasks
+---
+- name: Verify (Common) | rstudio-connect healthcheck
+  ansible.builtin.uri:
+    url: http://localhost:{{ rstudio_connect_www_port }}/__ping__
+    status_code:
+      - 200
+      - 402

@@ -1,8 +1,0 @@
-# verify file
----
-- name: Verify | rstudio-connect healthcheck
-  ansible.builtin.uri:
-    url: http://localhost:3939/__ping__
-    status_code:
-      - 200
-      - 402
