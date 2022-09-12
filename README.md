@@ -32,7 +32,7 @@ None
 
 ## Example
 
-Basic configuration:
+### RStudio Connect
 
 ```yaml
 ---
@@ -41,7 +41,9 @@ Basic configuration:
     - appsilon.rstudio_connect
 ```
 
-Playbook for installing additional Python versions with  [ansible-python-install](https://github.com/Appsilon/ansible-python-install) and configuring RStudio Connect to use them:
+### RStudio Connect with Python
+
+Example of installing and configuring Python (this role + [ansible-python-install](https://github.com/Appsilon/ansible-python-install))
 
 ```yaml
 ---
