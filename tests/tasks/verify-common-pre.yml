@@ -1,0 +1,8 @@
+# common verify file - pre tasks
+---
+- name: Verify (Common) | include role's variables
+  ansible.builtin.include_vars:
+    dir: "{{ item }}"
+  loop:
+    - "{{ playbook_dir }}/../../defaults"
+    - "{{ playbook_dir }}/../../vars"
