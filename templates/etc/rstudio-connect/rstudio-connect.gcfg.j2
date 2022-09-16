@@ -7,3 +7,17 @@
 {% from "macros/gcfg_encode_macro.j2" import gcfg_encode with context -%}
 {{ gcfg_encode(rstudio_connect_config) }}
 {% endif %}
+
+{% if python_versions | length or rstudio_connect_python_executables | length %}
+[Python]
+Enabled = true
+{% if python_versions is defined and python_versions | length %}
+{% for version in python_versions %}
+Executable = /opt/python/{{ version }}/bin/python3
+{% endfor %}
+{% else %}
+{% for exec in rstudio_connect_python_executables %}
+Executable = {{ exec }}
+{% endfor %}
+{% endif %}
+{% endif %}

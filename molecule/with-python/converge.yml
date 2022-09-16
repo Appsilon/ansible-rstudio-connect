@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Include vars
+      ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/main.yml"
+    - name: Include vars for Python
+      ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/with-python.yml"
+  roles:
+    - appsilon.python_install
+    - ../../../

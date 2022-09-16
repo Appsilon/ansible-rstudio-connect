@@ -1,0 +1,5 @@
+# vars file for with-python scenario
+---
+python_versions:
+  - 3.10.5
+  - 3.7.13
