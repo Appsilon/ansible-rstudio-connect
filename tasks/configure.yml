@@ -58,6 +58,9 @@
     - rstudio-connect-configure-migration
 
 - name: License activation (offline)
+  when: rstudio_connect_license_offline_key_b64_encoded | d()
+  notify: Restart rstudio-connect
+  no_log: true
   block:
     - name: License activation (offline) | upload key file
       ansible.builtin.copy:
@@ -70,9 +73,6 @@
     - name: License activation (offline) | activate using key file  # noqa no-changed-when
       ansible.builtin.shell: |
         /opt/rstudio-connect/bin/license-manager activate-file /etc/rstudio-connect/activation-key.lic
-  when: rstudio_connect_license_offline_key_b64_encoded | d()
-  notify: Restart rstudio-connect
-  no_log: true
 
 - name: License activation (online) | activate key
   ansible.builtin.shell: |
