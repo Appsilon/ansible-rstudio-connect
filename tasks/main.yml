@@ -12,20 +12,23 @@
     - rstudio-connect
     - rstudio-connect-include-variables
 
-- include: install.yml
+- name: Import install tasks
+  ansible.builtin.import_tasks: install.yml
   tags:
     - configuration
     - rstudio-connect
     - rstudio-connect-install
   notify: Restart rstudio-connect
 
-- include: configure.yml
+- name: Include configure tasks
+  ansible.builtin.include_tasks: configure.yml
   tags:
     - configuration
     - rstudio-connect
     - rstudio-connect-configure
 
-- include: install-drivers.yml
+- name: Include install drivers tasks
+  ansible.builtin.include_tasks: install-drivers.yml
   when: rstudio_connect_pro_drivers_install
 
 - name: Start and enable service
