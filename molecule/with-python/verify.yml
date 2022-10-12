@@ -4,7 +4,7 @@
   become: true
   pre_tasks:
     - name: Include pre-tasks
-      include: "{{ playbook_dir }}/../../tests/tasks/verify-common-pre.yml"
+      ansible.builtin.include_tasks: "{{ playbook_dir }}/../../tests/tasks/verify-common-pre.yml"
 
     - name: Include vars for Python
       ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/with-python.yml"
