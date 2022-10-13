@@ -12,7 +12,7 @@ Set up (the latest version of) [RStudio Connect](https://www.rstudio.com/product
 
 ## Role Variables
 
-* `rstudio_connect_version` [default: `2022.07.0`]: Version to install
+* `rstudio_connect_version` [default: `2022.09.0`]: Version to install
 * `rstudio_connect_install` [default: `[]`]: Additional packages to install (e.g. `r-base`)
 * `rstudio_connect_www_port` [default: `3939`]: The port you want RStudio Connect to listen on
 * `rstudio_connect_config`: A map of maps containing RStudio Connect configuration. Gets converted into Golang's configuration file (GCFG) and is writted on down to `rstudio-connect.gcfg`. See [default](./defaults/main.yml) for an example.
