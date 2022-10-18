@@ -2,3 +2,14 @@
 ---
 rstudio_connect_install:
   - r-base
+rstudio_connect_config:
+  R:
+    ExecutableSystemScanning: true
+  HTTP:
+    Listen: :{{ rstudio_connect_www_port }}
+  Authentication:
+    Provider: "password"
+  'RPackageRepository "CRAN"':
+    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
+  'RPackageRepository "RSPM"':
+    URL: https://packagemanager.rstudio.com/cran/__linux__/{{ ansible_lsb.codename | lower }}/latest
