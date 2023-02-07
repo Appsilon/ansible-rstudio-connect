@@ -27,10 +27,6 @@
     - rstudio-connect
     - rstudio-connect-configure
 
-- name: Include install drivers tasks
-  ansible.builtin.include_tasks: install-drivers.yml
-  when: rstudio_connect_pro_drivers_install
-
 - name: Start and enable service
   ansible.builtin.service:
     name: rstudio-connect
