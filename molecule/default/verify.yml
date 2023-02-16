@@ -1,7 +1,6 @@
 ---
 - name: Verify
   hosts: all
-  become: true
   pre_tasks:
     - name: Include pre-tasks
       ansible.builtin.include_tasks: "{{ playbook_dir }}/../../tests/tasks/verify-common-pre.yml"
