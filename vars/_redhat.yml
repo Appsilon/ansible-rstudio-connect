@@ -1,0 +1,8 @@
+# vars file
+---
+# rstudio_connect_download_url: "https://cdn.rstudio.com/connect/{{ rstudio_connect_version_short }}/rstudio-connect_{{ rstudio_connect_version }}~ubuntu20_{{ rstudio_connect_machine_map[ansible_machine] }}.deb"
+rstudio_connect_download_url: "https://cdn.rstudio.com/connect/{{ rstudio_connect_version_short }}/rstudio-connect-{{ rstudio_connect_version }}.el8.x86_64.rpm"
+
+rstudio_connect_pro_drivers_download_url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers_{{ rstudio_connect_pro_drivers_version }}.el8.{{ ansible_machine }}.rpm"
+
+r_download_url: "https://cdn.rstudio.com/r/ubuntu-{{ ansible_lsb.release | replace('.', '') }}/pkgs"

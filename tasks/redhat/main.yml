@@ -1,0 +1,42 @@
+# tasks file
+---
+- name: Install | dependencies
+  ansible.builtin.yum:
+    name: "{{ rstudio_connect_dependencies }}"
+    state: "{{ package_install_state | default('latest') }}"
+    update_cache: true
+  tags:
+    - rstudio-connect-install-dependencies
+
+- name: Install | additional
+  ansible.builtin.yum:
+    name: "{{ rstudio_connect_install }}"
+    state: "{{ package_install_state | default('latest') }}"
+  tags:
+    - rstudio-connect-install-additional
+
+- name: Install | create (download) directory
+  ansible.builtin.file:
+    path: "{{ rstudio_connect_downloads_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - rstudio-connect-install-download
+    - rstudio-connect-install-download-directory
+
+- name: Install | download rpm
+  ansible.builtin.get_url:
+    url: "{{ rstudio_connect_download_url }}"
+    dest: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
+    mode: '0755'
+
+- name: Install | install rpm
+  ansible.builtin.yum:
+    name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
+    disable_gpg_check: true
+  tags:
+    - rstudio-connect-install-install
+    - rstudio-connect-install-install-rpm
+  notify: Restart rstudio-connect
