@@ -1,5 +1,11 @@
 ---
 
+- name: Configure | create configuration directory
+  ansible.builtin.file:
+    path: /etc/rstudio-connect
+    state: directory
+    mode: '0755'
+
 - name: Configure | write encryption key to file
   ansible.builtin.copy:
     content: "{{ rstudio_encryption_key | trim }}"
@@ -24,18 +30,7 @@
     - rstudio_connect_sso_saml_metadata_content_b64_encoded|d()
     - rstudio_connect_sso_saml_metadata_file_path|d()
 
-- name: Link systemd default environment file to /etc/environment
-  ansible.builtin.file:
-    src: /etc/environment
-    dest: /etc/default/rstudio-connect
-    state: link
-    owner: root
-    group: root
-  notify: Restart rstudio-connect
-  tags:
-    - rstudio-connect-configure-environment-file
-
-- name: Configure | update (server) configuration file
+- name: Configure | create (server) configuration file
   ansible.builtin.template:
     src: etc/rstudio-connect/rstudio-connect.gcfg.j2
     dest: /etc/rstudio-connect/rstudio-connect.gcfg
@@ -45,39 +40,3 @@
   notify: Restart rstudio-connect
   tags:
     - rstudio-connect-configure-server
-
-- name: Configure | update (server) migration file
-  ansible.builtin.template:
-    src: etc/rstudio-connect/rstudio-connect-migration.gcfg.j2
-    dest: /etc/rstudio-connect/rstudio-connect-migration.gcfg
-    owner: root
-    group: root
-    mode: 0644
-  notify: Restart rstudio-connect
-  tags:
-    - rstudio-connect-configure-migration
-
-- name: License activation (offline)
-  when: rstudio_connect_license_offline_key_b64_encoded | d()
-  notify: Restart rstudio-connect
-  no_log: true
-  block:
-    - name: License activation (offline) | upload key file
-      ansible.builtin.copy:
-        content: "{{ rstudio_connect_license_offline_key_b64_encoded | b64decode }}"
-        dest: "/etc/rstudio-connect/activation-key.lic"
-        owner: root
-        group: root
-        mode: 0600
-
-    - name: License activation (offline) | activate using key file  # noqa no-changed-when
-      ansible.builtin.shell: |
-        /opt/rstudio-connect/bin/license-manager activate-file /etc/rstudio-connect/activation-key.lic
-
-- name: License activation (online) | activate key
-  ansible.builtin.shell: |
-    /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
-  notify: Restart rstudio-connect
-  register: license_output
-  when: rstudio_connect_license | d()
-  no_log: true

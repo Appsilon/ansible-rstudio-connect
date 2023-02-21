@@ -1,10 +1,10 @@
 # tasks file
 ---
-
 - name: Include variables
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "_{{ ansible_distribution_release }}.yml"
+    - "_{{ (ansible_distribution + '-' + ansible_distribution_major_version) | lower }}.yml"
     - "_{{ ansible_distribution | lower }}.yml"
     - _default.yml
   tags:
@@ -12,16 +12,33 @@
     - rstudio-connect
     - rstudio-connect-include-variables
 
+- name: Include configure tasks
+  ansible.builtin.include_tasks: configure.yml
+  tags:
+    - configuration
+    - rstudio-connect
+    - rstudio-connect-configure
+
 - name: Import install tasks
-  ansible.builtin.import_tasks: install.yml
+  ansible.builtin.include_tasks: "{{ ansible_os_family | lower }}/main.yml"
   tags:
     - configuration
     - rstudio-connect
     - rstudio-connect-install
-  notify: Restart rstudio-connect
 
-- name: Include configure tasks
-  ansible.builtin.include_tasks: configure.yml
+- name: Link systemd default environment file to /etc/environment
+  ansible.builtin.file:
+    src: /etc/environment
+    dest: /etc/default/rstudio-connect
+    state: link
+    owner: root
+    group: root
+  notify: Restart rstudio-connect
+  tags:
+    - rstudio-connect-configure-environment-file
+
+- name: Include license tasks
+  ansible.builtin.include_tasks: license.yml
   tags:
     - configuration
     - rstudio-connect
