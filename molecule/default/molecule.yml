@@ -4,15 +4,16 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance-rsc
+  - &instance
+    name: instance-rsc
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    published_ports:
-      - "0.0.0.0:3939:3939/tcp"
-    privileged: true
+    capabilities:
+      - SYS_ADMIN
     pre_build_image: true
+    platform: linux/amd64
 provisioner:
   name: ansible
   playbooks:
