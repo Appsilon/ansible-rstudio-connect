@@ -42,7 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [default, with-python]
-        distro: [ubuntu2004]
+        distro: [ubuntu2004,ubuntu2204]
         ansible-version: ['>=2.11.5']
 
     steps:
