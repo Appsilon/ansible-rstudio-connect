@@ -7,16 +7,16 @@
 - name: User | Change UID
   ansible.builtin.user:
     name: "{{ rstudio_connect_user }}"
-    uid: "{{ rstudio_connect_user_id }}" 
-  when: 
+    uid: "{{ rstudio_connect_user_id }}"
+  when:
     - rstudio_connect_user_id is defined
     - rstudio_connect_user_id > 0
 
 - name: User | Change GID
   ansible.builtin.group:
     name: "{{ rstudio_connect_user }}"
-    gid: "{{ rstudio_connect_group_id }}" 
-  when: 
+    gid: "{{ rstudio_connect_group_id }}"
+  when:
     - rstudio_connect_group_id is defined
     - rstudio_connect_group_id > 0
 
