@@ -18,6 +18,8 @@ Set up (the latest version of) [RStudio Connect](https://www.rstudio.com/product
 * `rstudio_connect_config`: A map of maps containing RStudio Connect configuration. Gets converted into Golang's configuration file (GCFG) and is writted on down to `rstudio-connect.gcfg`. See [default](./defaults/main.yml) for an example.
 * `rstudio_connect_config_override` [default: `""`]: If you know what you're doing, you can override whole `rstudio-connect.gcfg` config.
 * `rstudio_connect_license`: If specified, RStudio Connect will attempt to activate the supplied license key.
+* `rstudio_connect_user_id` [default: `-1`]: Set user id of `rstudio-connect` user to the provided value after Connect installation. Helps with keeping a consistent UID.
+* `rstudio_connect_group_id` [default: `-1`]: Set group id of `rstudio-connect` user to the provided value after Connect installation. Helps with keeping a consistent GID.
 * `rstudio_connect_python_executables` [default: `[]`]: List of paths to Python executables (e.g. `[/opt/python/3.10.6/bin/python3]`).
 * `python_versions` [default: `[]`]: List of Python versions, which were installed with [ansible-python-install role](https://github.com/Appsilon/ansible-python-install) (e.g. `[3.10.6, 3.7.8]`). Role will append Python executables information to the RStudio Connect configuration (using pattern: `/opt/python/x.x.x/bin/python3`).
 

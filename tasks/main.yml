@@ -37,6 +37,18 @@
   tags:
     - rstudio-connect-configure-environment-file
 
+- name: Include user tasks
+  ansible.builtin.include_tasks: user.yml
+  tags:
+    - configuration
+    - rstudio-connect
+    - rstudio-connect-configure
+  when:
+    - rstudio_connect_user_id is defined or rstudio_connect_group_id is defined
+    - rstudio_connect_user_id > 0 or rstudio_connect_group_id > 0
+  tags:
+    - rstudio-connect-configure-user
+
 - name: Include license tasks
   ansible.builtin.include_tasks: license.yml
   tags:

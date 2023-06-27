@@ -6,3 +6,9 @@
     status_code:
       - 200
       - 402
+
+- name: Verify (Common) | rstudio-connect uid and gid
+  check_user:
+    name: "rstudio-connect"
+    uid: 933
+    gid: 944
