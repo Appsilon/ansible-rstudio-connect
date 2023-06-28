@@ -49,10 +49,9 @@
 
 - name: Include user tasks
   ansible.builtin.include_tasks: user.yml
-  when:
-    - rstudio_connect_user_id is defined or rstudio_connect_group_id is defined
-    - rstudio_connect_user_id > 0 or rstudio_connect_group_id > 0
-    - rstudio_connect_user_id != (connect_uid | int) or rstudio_connect_group_id != (connect_gid | int)
+  when: >
+    (rstudio_connect_user_id is defined and rstudio_connect_user_id != (connect_uid | int))
+    or (rstudio_connect_group_id is defined and rstudio_connect_group_id != (connect_gid | int))
   tags:
     - rstudio-connect-configure-user
 
