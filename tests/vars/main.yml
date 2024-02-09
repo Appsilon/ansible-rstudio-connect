@@ -1,0 +1,10 @@
+# vars file
+---
+rstudio_connect_install: []
+rstudio_connect_config:
+  R:
+    ExecutableSystemScanning: true
+  HTTP:
+    Listen: :{{ rstudio_connect_www_port }}
+  Authentication:
+    Provider: "password"
