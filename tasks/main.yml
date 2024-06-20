@@ -37,6 +37,24 @@
   tags:
     - rstudio-connect-configure-environment-file
 
+- name: Get rstudio-connect user info
+  ansible.builtin.getent:
+    database: passwd
+    key: "rstudio-connect"
+
+- name: Extract UID and GID
+  ansible.builtin.set_fact:
+    connect_uid: "{{ getent_passwd['rstudio-connect'][1] }}"
+    connect_gid: "{{ getent_passwd['rstudio-connect'][2] }}"
+
+- name: Include user tasks
+  ansible.builtin.include_tasks: user.yml
+  when: >
+    (rstudio_connect_user_id is defined and rstudio_connect_user_id != (connect_uid | int))
+    or (rstudio_connect_group_id is defined and rstudio_connect_group_id != (connect_gid | int))
+  tags:
+    - rstudio-connect-configure-user
+
 - name: Include license tasks
   ansible.builtin.include_tasks: license.yml
   tags:
