@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          include:
+        include:
           - scenario: default
             distro: ubuntu2004
             instance: instance-rsc
