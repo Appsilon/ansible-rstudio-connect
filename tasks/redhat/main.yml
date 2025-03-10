@@ -6,7 +6,7 @@
   when:
     - ansible_distribution == "RedHat"
     - ansible_distribution_major_version == "9"
-  command: >
+  ansible.builtin.command: >
     subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_architecture }}-rpms
   register: enable_codeready_result
   changed_when: enable_codeready_result.rc == 0
