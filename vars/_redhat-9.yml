@@ -1,0 +1,3 @@
+# vars file
+---
+rstudio_connect_download_url: "https://cdn.rstudio.com/connect/{{ rstudio_connect_version_short }}/rstudio-connect-{{ rstudio_connect_version }}.el9.x86_64.rpm"

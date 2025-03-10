@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install test dependencies
         run: pip install ansible-lint[community,yamllint]
@@ -40,9 +40,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario: [default, with-python]
-        distro: [ubuntu2004, ubuntu2204]
-        ansible-version: ['>=2.11.5']
+        scenario: [default, with-python, default]
+        distro: [ubuntu2004, ubuntu2204, ubi9]
+        platform: [instance-rsc, instance-rsc, instance-rh]
 
     steps:
       - name: Check out the codebase
@@ -53,17 +53,18 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install test dependencies
-        run: pip install 'ansible${{ matrix.ansible-version }}' molecule molecule-plugins[docker] docker
+        run: pip install -r requirements.txt
 
       - name: Run Molecule tests
         run: |
-          molecule test -s "${{ matrix.scenario }}"
+          molecule test -s "${{ matrix.scenario }} --platform-name ${MOLECULE_PLATFORM:-instance-rsc"
         env:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
           MOLECULE_DEBUG: '1'
           MOLECULE_DISTRO: "${{ matrix.distro }}"
+          MOLECULE_PLATFORM: "${{ matrix.platform }}"
           PY_COLORS: '1'
