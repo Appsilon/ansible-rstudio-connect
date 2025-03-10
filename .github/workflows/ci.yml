@@ -54,7 +54,7 @@ jobs:
             distro: ubuntu2204
             platform: instance-rsc-with-python
           - scenario: default
-            distro: ubi9
+            distro: rockylinux9
             platform: instance-rh
 
     steps:
