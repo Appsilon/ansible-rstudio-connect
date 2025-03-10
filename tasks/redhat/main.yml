@@ -54,7 +54,7 @@
 # 6) Download RStudio Connect RPM (parametric)
 - name: Install | download rpm
   ansible.builtin.get_url:
-    url: "{{ rstudio_connect_download_url ) }}"
+    url: "{{ rstudio_connect_download_url  }}"
     dest: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
     mode: '0644'
   tags:
