@@ -1,5 +1,11 @@
 # tasks file
 ---
+- name: Install libev-devel | Install system dependecies
+  ansible.builtin.dnf:
+    name: "{{ system_dependecies }}"
+    state: present
+  when: system_dependecies is defined 
+
 - name: Install | dependencies
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
