@@ -43,19 +43,14 @@ jobs:
         include:
           - scenario: default
             distro: ubuntu2004
-            platform: instance-rsc
           - scenario: with-python
             distro: ubuntu2004
-            platform: instance-rsc-with-python
           - scenario: default
             distro: ubuntu2204
-            platform: instance-rsc
           - scenario: with-python
             distro: ubuntu2204
-            platform: instance-rsc-with-python
           - scenario: default
             distro: rockylinux9
-            platform: instance-rh
 
     steps:
       - name: Check out the codebase
@@ -73,11 +68,10 @@ jobs:
 
       - name: Run Molecule tests
         run: |
-          molecule test -s "${{ matrix.scenario }}" --platform-name ${MOLECULE_PLATFORM:-instance-rsc}
+          molecule test -s "${{ matrix.scenario }}"
         env:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
           MOLECULE_DEBUG: '1'
           MOLECULE_DISTRO: "${{ matrix.distro }}"
-          MOLECULE_PLATFORM: "${{ matrix.platform }}"
           PY_COLORS: '1'

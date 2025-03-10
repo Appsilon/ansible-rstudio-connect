@@ -14,12 +14,6 @@ platforms:
     cgroupns_mode: host
     pre_build_image: true
     platform: linux/amd64
-  - <<: *instance
-    name: instance-rh
-    image: "registry.access.redhat.com/${MOLECULE_DISTRO:-ubi9}/ubi-init"
-    command: "/usr/sbin/init"
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:rw
 provisioner:
   name: ansible
   playbooks:
