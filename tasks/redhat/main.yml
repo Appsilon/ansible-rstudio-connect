@@ -1,10 +1,53 @@
 # tasks file
 ---
-- name: Install libev-devel | Install dependecies
+- name: Enable CodeReady Builder Repo (RHEL9 only)
+  ansible.builtin.command:
+    cmd: "subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_architecture }}-rpms"
+  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == "9"
+
+- name: Install EPEL Release (RHEL9 only)
   ansible.builtin.dnf:
-    name: "{{ system_dependecies }}"
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
     state: present
-  when: system_dependecies is defined
+  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == "9"
+
+- name: Install System Dependencies
+  ansible.builtin.dnf:
+    name: "{{ system_dependencies }}"
+    state: present
+    update_cache: true
+  when: system_dependencies is defined
+
+- name: Create Downloads Directory
+  ansible.builtin.file:
+    path: "{{ r_downloads_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == "9"
+
+- name: Download R Versions (RHEL9 only)
+  ansible.builtin.get_url:
+    url: "{{ r_download_url }}/R-{{ item }}-1-1.x86_64.rpm"
+    dest: "{{ r_downloads_path }}/R-{{ item }}-1-1.x86_64.rpm"
+    mode: '0644'
+    owner: root
+    group: root
+  loop: "{{ r_versions }}"
+  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == "9"
+
+- name: Install R Versions (RHEL9 only)
+  ansible.builtin.dnf:
+    name: "{{ r_downloads_path }}/R-{{ item }}-1-1.x86_64.rpm"
+    state: present
+    disable_gpg_check: true
+  loop: "{{ r_versions }}"
+  register: r_install_result
+  until: r_install_result is not failed
+  retries: 5
+  delay: 5
+  when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == "9"
 
 - name: Install | dependencies
   ansible.builtin.dnf:

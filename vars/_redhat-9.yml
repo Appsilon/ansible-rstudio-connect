@@ -1,5 +1,13 @@
 # vars file
 ---
-system_dependecies:
+rstudio_connect_version: "2025.02.0"
+rstudio_connect_version_short: "{{ rstudio_connect_version | regex_replace('.[^.]*$', '') }}"
+r_downloads_path: /var/lib/ansible/downloads
+r_download_url: "https://cdn.rstudio.com/r/rhel-9/pkgs"
+r_versions:
+  - 4.1.0
+
+system_dependencies:
   - libev-devel
+
 rstudio_connect_download_url: "https://cdn.rstudio.com/connect/{{ rstudio_connect_version_short }}/rstudio-connect-{{ rstudio_connect_version }}.el9.x86_64.rpm"
