@@ -40,22 +40,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - scenario: default
-          distro: ubuntu2004
-          instance: instance-rsc
-        - scenario: with-python
-          distro: ubuntu2004
-          instance: instance-rsc
-        - scenario: default
-          distro: ubuntu2204
-          instance: instance-rsc
-        - scenario: with-python
-          distro: ubuntu2204
-          instance: instance-rsc
-        - scenario: default
-          distro: ubi9
-          instance: instance-rh
+          include:
+          - scenario: default
+            distro: ubuntu2004
+            instance: instance-rsc
+          - scenario: with-python
+            distro: ubuntu2004
+            instance: instance-rsc
+          - scenario: default
+            distro: ubuntu2204
+            instance: instance-rsc
+          - scenario: with-python
+            distro: ubuntu2204
+            instance: instance-rsc
+          - scenario: default
+            distro: ubi9
+            instance: instance-rh
 
     steps:
       - name: Check out the codebase
