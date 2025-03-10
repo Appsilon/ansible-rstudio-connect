@@ -1,54 +1,28 @@
-# tasks file
 ---
-- name: Enable CodeReady Builder Repo (RHEL9 only)
-  ansible.builtin.command:
-    cmd: "subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_architecture }}-rpms"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "9"
+# tasks/main.yml
 
-- name: Install EPEL Release (RHEL9 only)
+# 1) Enable CodeReady Builder (RHEL 9 only)
+- name: Enable codeready-builder repository
+  when:
+    - ansible_distribution == "RedHat"
+    - ansible_distribution_major_version == "9"
+  command: >
+    subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_architecture }}-rpms
+  register: enable_codeready_result
+  changed_when: enable_codeready_result.rc == 0
+  args:
+    creates: /etc/yum.repos.d/codeready-builder.repo
+
+# 2) Install EPEL (RHEL 9 only)
+- name: Install EPEL repository
+  when:
+    - ansible_distribution == "RedHat"
+    - ansible_distribution_major_version == "9"
   ansible.builtin.dnf:
-    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
     state: present
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "9"
 
-- name: Install System Dependencies
-  ansible.builtin.dnf:
-    name: "{{ system_dependencies }}"
-    state: present
-    update_cache: true
-  when: system_dependencies is defined
-
-- name: Create Downloads Directory
-  ansible.builtin.file:
-    path: "{{ r_downloads_path }}"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "9"
-
-- name: Download R Versions (RHEL9 only)
-  ansible.builtin.get_url:
-    url: "{{ r_download_url }}/R-{{ item }}-1-1.x86_64.rpm"
-    dest: "{{ r_downloads_path }}/R-{{ item }}-1-1.x86_64.rpm"
-    mode: '0644'
-    owner: root
-    group: root
-  loop: "{{ r_versions }}"
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "9"
-
-- name: Install R Versions (RHEL9 only)
-  ansible.builtin.dnf:
-    name: "{{ r_downloads_path }}/R-{{ item }}-1-1.x86_64.rpm"
-    state: present
-    disable_gpg_check: true
-  loop: "{{ r_versions }}"
-  register: r_install_result
-  until: r_install_result is not failed
-  retries: 5
-  delay: 5
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == "9"
-
+# 3) Install dependencies
 - name: Install | dependencies
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
@@ -57,6 +31,7 @@
   tags:
     - rstudio-connect-install-dependencies
 
+# 4) Install additional packages
 - name: Install | additional
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_install }}"
@@ -64,27 +39,33 @@
   tags:
     - rstudio-connect-install-additional
 
+# 5) Create (download) directory
 - name: Install | create (download) directory
   ansible.builtin.file:
     path: "{{ rstudio_connect_downloads_path }}"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   tags:
     - rstudio-connect-install-download
     - rstudio-connect-install-download-directory
 
+# 6) Download RStudio Connect RPM (parametric)
 - name: Install | download rpm
   ansible.builtin.get_url:
-    url: "{{ rstudio_connect_download_url }}"
+    url: "{{ rstudio_connect_download_url ) }}"
     dest: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
-    mode: '0755'
+    mode: '0644'
+  tags:
+    - rstudio-connect-install-download
 
+# 7) Install RStudio Connect RPM (parametric)
 - name: Install | install rpm
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
     disable_gpg_check: true
+    state: present
   tags:
     - rstudio-connect-install-install
     - rstudio-connect-install-install-rpm
