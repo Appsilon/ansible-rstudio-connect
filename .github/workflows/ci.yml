@@ -73,7 +73,7 @@ jobs:
 
       - name: Run Molecule tests
         run: |
-          molecule test -s "${{ matrix.scenario }} --platform-name ${MOLECULE_PLATFORM:-instance-rsc"
+          molecule test -s "${{ matrix.scenario }} --platform-name ${{ MOLECULE_PLATFORM:-instance-rsc }}"
         env:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
