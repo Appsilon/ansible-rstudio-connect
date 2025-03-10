@@ -46,13 +46,13 @@ jobs:
             platform: instance-rsc
           - scenario: with-python
             distro: ubuntu2004
-            platform: instance-rsc
+            platform: instance-rsc-with-python
           - scenario: default
             distro: ubuntu2204
             platform: instance-rsc
           - scenario: with-python
             distro: ubuntu2204
-            platform: instance-rsc
+            platform: instance-rsc-with-python
           - scenario: default
             distro: ubi9
             platform: instance-rh
