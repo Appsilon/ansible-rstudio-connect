@@ -1,5 +1,10 @@
 ---
 # 4) Install dependencies
+- name: Remove curl-minimal if present
+  ansible.builtin.dnf:
+    name: curl-minimal
+    state: absent
+
 - name: Install | dependencies
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
@@ -7,7 +12,6 @@
     update_cache: true
   tags:
     - rstudio-connect-install-dependencies
-  when: ansible_distribution_major_version < "9"
 
 # 5) Install additional packages
 - name: Install | additional
