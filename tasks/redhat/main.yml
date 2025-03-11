@@ -2,9 +2,10 @@
 # tasks/main.yml
 
 # 1) Enable CodeReady Builder (RHEL 9 only)
-- name: Enable CRB repository
-  ansible.builtin.command:
-    cmd: subscription-manager repos --enable codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms
+- name: Enable CRB repository using dnf_repository
+  ansible.builtin.dnf_repository:
+    name: codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms
+    enabled: true
   when:
     - ansible_distribution == "RedHat"
     - ansible_distribution_major_version == "9"
