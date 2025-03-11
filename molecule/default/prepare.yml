@@ -12,7 +12,7 @@
     # Install R and dependencies for RHEL 9 using temporary CRB and EPEL repos
     - name: Install R and dependencies using temporary CRB and EPEL repositories
       ansible.builtin.dnf:
-        name: 
+        name:
           - R
           - R-devel
         enablerepo: "epel,codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms"
