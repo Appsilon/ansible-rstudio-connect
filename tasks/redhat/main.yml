@@ -7,6 +7,7 @@
     update_cache: true
   tags:
     - rstudio-connect-install-dependencies
+  extra_args: "--allowerasing"
 
 # 5) Install additional packages
 - name: Install | additional
