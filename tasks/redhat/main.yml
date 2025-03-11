@@ -1,42 +1,102 @@
-# tasks file
 ---
+# 4) Install dependencies
+- name: Remove curl-minimal if present
+  ansible.builtin.dnf:
+    name: curl-minimal
+    state: absent
+
 - name: Install | dependencies
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
     state: "{{ package_install_state | default('latest') }}"
     update_cache: true
   tags:
     - rstudio-connect-install-dependencies
 
+# 5) Install additional packages
 - name: Install | additional
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_install }}"
     state: "{{ package_install_state | default('latest') }}"
   tags:
     - rstudio-connect-install-additional
 
+# 6) Create (download) directory
 - name: Install | create (download) directory
   ansible.builtin.file:
     path: "{{ rstudio_connect_downloads_path }}"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
   tags:
     - rstudio-connect-install-download
     - rstudio-connect-install-download-directory
 
+# 7) Download RStudio Connect RPM (parametric)
 - name: Install | download rpm
   ansible.builtin.get_url:
     url: "{{ rstudio_connect_download_url }}"
     dest: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
-    mode: '0755'
+    mode: '0644'
+  tags:
+    - rstudio-connect-install-download
 
+# 8) Install RStudio Connect RPM (parametric)
 - name: Install | install rpm
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
     disable_gpg_check: true
+    state: present
   tags:
     - rstudio-connect-install-install
     - rstudio-connect-install-install-rpm
   notify: Restart rstudio-connect
+# Verify if RStudio Connect RPM is installed
+# Check if systemd is present
+- name: Check if systemd is running
+  ansible.builtin.stat:
+    path: /run/systemd/system
+  register: systemd_status
+
+# Install and enable service if systemd is available
+- name: Enable and start RStudio Connect service
+  ansible.builtin.systemd:
+    name: rstudio-connect
+    enabled: true
+    state: started
+  when: systemd_status.stat.exists
+  register: service_status
+  failed_when: service_status.failed or (service_status.status != "started")
+
+# Manually start Connect if systemd is missing
+- name: Manually start RStudio Connect
+  ansible.builtin.shell: "/opt/rstudio-connect/bin/rstudio-connect --config /etc/rstudio-connect/rstudio-connect.gcfg &"
+  when: not systemd_status.stat.exists
+  async: 10
+  poll: 0
+  changed_when: false
+  failed_when: false
+
+# Wait briefly to ensure manual service startup
+- name: Wait for manual start to initialize
+  ansible.builtin.wait_for:
+    timeout: 10
+  when: not systemd_status.stat.exists
+
+# Fallback to read logs directly if systemd isn't available
+- name: Check Direct RStudio Connect Logs
+  ansible.builtin.stat:
+    path: /var/log/rstudio-connect.log
+  register: log_file
+
+- name: Display Direct RStudio Connect Logs
+  ansible.builtin.slurp:
+    src: /var/log/rstudio-connect.log
+  when: log_file.stat.exists
+  register: rstudio_log
+
+- name: Show Logs if Available
+  ansible.builtin.debug:
+    msg: "{{ rstudio_log['content'] | b64decode }}"
+  when: log_file.stat.exists
