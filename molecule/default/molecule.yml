@@ -13,7 +13,7 @@ platforms:
     privileged: true
     cgroupns_mode: host
     pre_build_image: true
-    platform: linux/amd64
+
 provisioner:
   name: ansible
   playbooks:

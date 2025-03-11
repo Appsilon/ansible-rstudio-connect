@@ -75,3 +75,19 @@ jobs:
           MOLECULE_DEBUG: '1'
           MOLECULE_DISTRO: "${{ matrix.distro }}"
           PY_COLORS: '1'
+        continue-on-error: true  # Continue even if the tests fail to capture logs
+
+      - name: Display RStudio Connect logs on failure
+        if: failure()  # Only run if the previous step failed
+        run: |
+          echo "::group::RStudio Connect Status"
+          sudo systemctl status rstudio-connect || true
+          echo "::endgroup::"
+
+          echo "::group::RStudio Connect Logs"
+          sudo journalctl -xeu rstudio-connect || true
+          echo "::endgroup::"
+
+      - name: Fail if Molecule tests failed
+        if: failure()
+        run: exit 1
