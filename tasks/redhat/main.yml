@@ -7,7 +7,7 @@
     update_cache: true
   tags:
     - rstudio-connect-install-dependencies
-  extra_args: "--allowerasing"
+  when: ansible_distribution_major_version < "9"
 
 # 5) Install additional packages
 - name: Install | additional
