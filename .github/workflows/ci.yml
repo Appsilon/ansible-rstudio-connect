@@ -75,3 +75,18 @@ jobs:
           MOLECULE_DEBUG: '1'
           MOLECULE_DISTRO: "${{ matrix.distro }}"
           PY_COLORS: '1'
+
+      - name: Display RStudio Connect logs on failure
+        if: always()
+        run: |
+          echo "::group::RStudio Connect Status"
+          sudo systemctl status rstudio-connect || echo "Service not found or systemd not available."
+          echo "::endgroup::"
+
+          echo "::group::RStudio Connect Logs (journalctl)"
+          sudo journalctl -xeu rstudio-connect || echo "journalctl not available or no logs."
+          echo "::endgroup::"
+
+          echo "::group::RStudio Connect Logs (Direct Fallback)"
+          cat /var/log/rstudio-connect.log || echo "No direct log file found."
+          echo "::endgroup::"
