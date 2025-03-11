@@ -78,7 +78,7 @@ jobs:
         continue-on-error: true  # Continue even if the tests fail to capture logs
 
       - name: Display RStudio Connect logs on failure
-        if: failure()  # Only run if the previous step failed
+        if: always()  # Only run if the previous step failed
         run: |
           echo "::group::RStudio Connect Status"
           sudo systemctl status rstudio-connect || true
@@ -89,5 +89,5 @@ jobs:
           echo "::endgroup::"
 
       - name: Fail if Molecule tests failed
-        if: failure()
+        if: steps.molecule.outcome == 'failure'
         run: exit 1
