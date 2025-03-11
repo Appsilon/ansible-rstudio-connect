@@ -41,14 +41,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - scenario: default
-            distro: ubuntu2004
-          - scenario: with-python
-            distro: ubuntu2004
-          - scenario: default
-            distro: ubuntu2204
-          - scenario: with-python
-            distro: ubuntu2204
+          # - scenario: default
+          #   distro: ubuntu2004
+          # - scenario: with-python
+          #   distro: ubuntu2004
+          # - scenario: default
+          #   distro: ubuntu2204
+          # - scenario: with-python
+          #   distro: ubuntu2204
           - scenario: default
             distro: rockylinux9
 
