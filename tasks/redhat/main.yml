@@ -2,38 +2,27 @@
 # tasks/main.yml
 
 # 1) Enable CodeReady Builder (RHEL 9 only)
-- name: Enable CRB
+- name: Enable CRB repository
+  ansible.builtin.command:
+    cmd: subscription-manager repos --enable codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms
   when:
     - ansible_distribution == "RedHat"
     - ansible_distribution_major_version == "9"
-  ansible.builtin.dnf_repository:
-    name: crb
-    enabled: true
 
+# 2) Import EPEL GPG key
 - name: Import EPEL GPG key
   ansible.builtin.rpm_key:
     key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ rhel_release }}"
     state: present
 
+# 3) Install EPEL
 - name: Install EPEL (RHEL 9)
   ansible.builtin.dnf:
     name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ rhel_release }}.noarch.rpm"
     state: present
 
-- name: Install libev-devel
-  ansible.builtin.dnf:
-    name:
-      - libevent
-      - libev-devel
-      - flexiblas-devel
-      - libtirpc-devel
-    state: present
-  when:
-    - ansible_distribution == 'RedHat'
-    - ansible_distribution_major_version == "9"
 
-
-# 2) Install dependencies
+# 4) Install dependencies
 - name: Install | dependencies
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
@@ -42,7 +31,7 @@
   tags:
     - rstudio-connect-install-dependencies
 
-# 3) Install additional packages
+# 5) Install additional packages
 - name: Install | additional
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_install }}"
@@ -50,7 +39,7 @@
   tags:
     - rstudio-connect-install-additional
 
-# 4) Create (download) directory
+# 6) Create (download) directory
 - name: Install | create (download) directory
   ansible.builtin.file:
     path: "{{ rstudio_connect_downloads_path }}"
@@ -62,7 +51,7 @@
     - rstudio-connect-install-download
     - rstudio-connect-install-download-directory
 
-# 5) Download RStudio Connect RPM (parametric)
+# 7) Download RStudio Connect RPM (parametric)
 - name: Install | download rpm
   ansible.builtin.get_url:
     url: "{{ rstudio_connect_download_url }}"
@@ -71,7 +60,7 @@
   tags:
     - rstudio-connect-install-download
 
-# 6) Install RStudio Connect RPM (parametric)
+# 8) Install RStudio Connect RPM (parametric)
 - name: Install | install rpm
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
