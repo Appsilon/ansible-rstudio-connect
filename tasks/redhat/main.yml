@@ -1,7 +1,5 @@
 ---
 # tasks/main.yml
-
-# 1) Enable CodeReady Builder (RHEL 9 only)
 - name: Check if CRB is already enabled
   ansible.builtin.shell: >
     subscription-manager repos --list-enabled | grep -q codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms
@@ -17,7 +15,16 @@
     - ansible_distribution == "RedHat"
     - ansible_distribution_major_version == "9"
     - check_crb_enabled.rc != 0  # Only run if CRB is not already enabled
-  changed_when: true   
+  changed_when: true
+
+# 1) Enable CodeReady Builder (RHEL 9 only)
+- name: Enable CRB repository using dnf_repository
+  ansible.builtin.dnf_repository:
+    name: codeready-builder-for-rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}-rpms
+    enabled: true
+  when:
+    - ansible_distribution == "RedHat"
+    - ansible_distribution_major_version == "9"
 
 # 2) Import EPEL GPG key
 - name: Import EPEL GPG key
