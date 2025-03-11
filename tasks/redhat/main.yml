@@ -108,4 +108,3 @@
 - name: Debug Direct Logs
   ansible.builtin.debug:
     var: direct_logs.stdout
-
