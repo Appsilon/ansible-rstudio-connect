@@ -52,44 +52,45 @@
     - rstudio-connect-install-install
     - rstudio-connect-install-install-rpm
   notify: Restart rstudio-connect
-
-# Verify RPM installation
+# Verify if RStudio Connect RPM is installed
 - name: Check if RStudio Connect RPM is installed
-  ansible.builtin.command: rpm -qa | grep rstudio-connect
+  ansible.builtin.dnf:
+    name: rstudio-connect
+    state: present
   register: rpm_check
-  ignore_errors: true
+  changed_when: false
 
-- name: Debug RPM Installation
+- name: Debug RPM Installation Result
   ansible.builtin.debug:
-    var: rpm_check.stdout
+    var: rpm_check
 
-# Check for systemd service file
-- name: Check for systemd service file
-  ansible.builtin.command: ls -l /etc/systemd/system/rstudio-connect.service
+# Check if systemd service file exists
+- name: Check for RStudio Connect systemd service file
+  ansible.builtin.stat:
+    path: /etc/systemd/system/rstudio-connect.service
   register: service_file_check
-  ignore_errors: true
 
-- name: Debug Service File
+- name: Debug Service File Existence
   ansible.builtin.debug:
-    var: service_file_check.stdout
+    var: service_file_check.stat.exists
 
 # Check if systemd is running
-- name: Check Init System
-  ansible.builtin.command: ps -p 1 -o comm=
-  register: init_system
-  ignore_errors: true
+- name: Check if systemd is running
+  ansible.builtin.stat:
+    path: /run/systemd/system
+  register: systemd_status
+  changed_when: false
 
 - name: Debug Init System
   ansible.builtin.debug:
-    var: init_system.stdout
+    var: systemd_status.stat.exists
 
-# Manually start Connect if systemd is missing
-- name: Manually start RStudio Connect
-  ansible.builtin.command: "/opt/rstudio-connect/bin/rstudio-connect --config /etc/rstudio-connect/rstudio-connect.gcfg &"
-  when: init_system.stdout != "systemd"
-  async: 10
-  poll: 0
-  ignore_errors: true
+# Start Connect manually if systemd is missing
+- name: Manually start RStudio Connect if systemd is not present
+  ansible.builtin.shell: "/opt/rstudio-connect/bin/rstudio-connect --config /etc/rstudio-connect/rstudio-connect.gcfg &"
+  when: not systemd_status.stat.exists
+  changed_when: false
+  failed_when: false
 
 # Enable and start service if systemd is present
 - name: Enable and start RStudio Connect service
@@ -97,14 +98,21 @@
     name: rstudio-connect
     enabled: true
     state: started
-  when: init_system.stdout == "systemd"
+  when: systemd_status.stat.exists
 
-# Fallback log capture
-- name: Check Direct RStudio Connect Logs
-  ansible.builtin.command: cat /var/log/rstudio-connect.log
-  register: direct_logs
-  ignore_errors: true
+# Fallback: Check Direct RStudio Connect Logs
+- name: Check direct RStudio Connect log file
+  ansible.builtin.stat:
+    path: /var/log/rstudio-connect.log
+  register: log_file
 
-- name: Debug Direct Logs
+- name: Debug RStudio Connect Logs
+  ansible.builtin.slurp:
+    src: /var/log/rstudio-connect.log
+  when: log_file.stat.exists
+  register: rstudio_log
+
+- name: Show Logs if Available
   ansible.builtin.debug:
-    var: direct_logs.stdout
+    msg: "{{ rstudio_log['content'] | b64decode }}"
+  when: log_file.stat.exists
