@@ -75,4 +75,3 @@ jobs:
           MOLECULE_DEBUG: '1'
           MOLECULE_DISTRO: "${{ matrix.distro }}"
           PY_COLORS: '1'
-        continue-on-error: true  # Continue even if the tests fail to capture logs
