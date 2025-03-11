@@ -2,27 +2,16 @@
 # tasks/main.yml
 
 # 1) Enable CodeReady Builder (RHEL 9 only)
-- name: Enable codeready-builder repository
+- name: Enable CRB
   when:
     - ansible_distribution == "RedHat"
     - ansible_distribution_major_version == "9"
-  ansible.builtin.command: >
-    subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_architecture }}-rpms
-  register: enable_codeready_result
-  changed_when: enable_codeready_result.rc == 0
-  args:
-    creates: /etc/yum.repos.d/codeready-builder.repo
+  ansible.builtin.dnf_repository:
+    name: crb
+    enabled: true
 
-# 2) Install EPEL (RHEL 9 only)
-- name: Install EPEL repository
-  when:
-    - ansible_distribution == "RedHat"
-    - ansible_distribution_major_version == "9"
-  ansible.builtin.dnf:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-    state: present
 
-# 3) Install dependencies
+# 2) Install dependencies
 - name: Install | dependencies
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
@@ -31,7 +20,7 @@
   tags:
     - rstudio-connect-install-dependencies
 
-# 4) Install additional packages
+# 3) Install additional packages
 - name: Install | additional
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_install }}"
@@ -39,7 +28,7 @@
   tags:
     - rstudio-connect-install-additional
 
-# 5) Create (download) directory
+# 4) Create (download) directory
 - name: Install | create (download) directory
   ansible.builtin.file:
     path: "{{ rstudio_connect_downloads_path }}"
@@ -51,7 +40,7 @@
     - rstudio-connect-install-download
     - rstudio-connect-install-download-directory
 
-# 6) Download RStudio Connect RPM (parametric)
+# 5) Download RStudio Connect RPM (parametric)
 - name: Install | download rpm
   ansible.builtin.get_url:
     url: "{{ rstudio_connect_download_url }}"
@@ -60,7 +49,7 @@
   tags:
     - rstudio-connect-install-download
 
-# 7) Install RStudio Connect RPM (parametric)
+# 6) Install RStudio Connect RPM (parametric)
 - name: Install | install rpm
   ansible.builtin.dnf:
     name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
