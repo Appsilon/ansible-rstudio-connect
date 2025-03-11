@@ -25,6 +25,8 @@
     name:
       - libevent
       - libev-devel
+      - flexiblas-devel
+      - libtirpc-devel
     state: present
   when:
     - ansible_distribution == 'RedHat'
