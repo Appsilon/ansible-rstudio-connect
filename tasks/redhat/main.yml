@@ -10,6 +10,26 @@
     name: crb
     enabled: true
 
+- name: Import EPEL GPG key
+  ansible.builtin.rpm_key:
+    key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ rhel_release }}"
+    state: present
+
+- name: Install EPEL (RHEL 9)
+  ansible.builtin.dnf:
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ rhel_release }}.noarch.rpm"
+    state: present
+
+- name: Install libev-devel
+  ansible.builtin.dnf:
+    name:
+      - libevent
+      - libev-devel
+    state: present
+  when: 
+    - ansible_distribution == 'RedHat'
+    - ansible_distribution_major_version == "9"
+
 
 # 2) Install dependencies
 - name: Install | dependencies
