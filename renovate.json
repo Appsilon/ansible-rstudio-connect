@@ -27,9 +27,19 @@
       "automerge": false,
       "groupName": "dependencies",
       "managers": [
-        "pre-commit",
         "ansible",
         "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ]
+    },
+    {
+      "automerge": false,
+      "groupName": "pre-commit-hooks",
+      "managers": [
+        "pre-commit"
       ],
       "matchUpdateTypes": [
         "minor",
