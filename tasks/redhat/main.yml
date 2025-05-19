@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: Install | dependencies
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_dependencies }}"
     state: "{{ package_install_state | default('latest') }}"
     update_cache: true
@@ -9,7 +9,7 @@
     - rstudio-connect-install-dependencies
 
 - name: Install | additional
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_install }}"
     state: "{{ package_install_state | default('latest') }}"
   tags:
@@ -33,7 +33,7 @@
     mode: '0755'
 
 - name: Install | install rpm
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: "{{ rstudio_connect_downloads_path }}/rstudio-connect-{{ rstudio_connect_version }}.rpm"
     disable_gpg_check: true
   tags:
