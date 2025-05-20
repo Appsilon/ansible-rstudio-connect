@@ -1,0 +1,11 @@
+# vars file
+---
+rstudio_connect_download_url: "{{
+    'https://cdn.rstudio.com/connect/' +
+    rstudio_connect_version_short +
+    '/rstudio-connect_' +
+    rstudio_connect_version +
+    '~ubuntu' + ansible_distribution_version.split('.')[0] + '_' +
+    rstudio_connect_machine_map[ansible_machine] +
+    '.deb'
+  }}"
