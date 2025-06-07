@@ -6,3 +6,25 @@
     status_code:
       - 200
       - 402
+
+- name: Verify (Common) | Get rstudio-connect user info
+  ansible.builtin.getent:
+    database: passwd
+    key: "rstudio-connect"
+
+- name: Verify (Common) | Extract UID and GID
+  ansible.builtin.set_fact:
+    connect_uid: "{{ getent_passwd['rstudio-connect'][1] }}"
+    connect_gid: "{{ getent_passwd['rstudio-connect'][2] }}"
+
+- name: Verify (Common) | Check UID
+  ansible.builtin.assert:
+    that:
+      - (connect_uid | int) == 933
+    fail_msg: "UID is not valid. UID from passwd {{ connect_uid }}"
+
+- name: Verify (Common) | Check GID
+  ansible.builtin.assert:
+    that:
+      - (connect_gid | int) == 944
+    fail_msg: "GID is not valid. GID from passwd {{ connect_gid }}"
