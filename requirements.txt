@@ -32,5 +32,5 @@ rich==13.7.0
 rpds-py==0.16.2
 selinux==0.3.0
 subprocess-tee==0.4.1
-urllib3==2.1.0
+urllib3==2.5.0
 wcmatch==8.5
