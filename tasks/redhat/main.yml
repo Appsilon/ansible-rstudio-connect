@@ -5,7 +5,7 @@
     name: "{{ rstudio_connect_dependencies }}"
     state: "{{ package_install_state | default('latest') }}"
     update_cache: true
-    alloweresing: true
+    allowerasing: true
   tags:
     - rstudio-connect-install-dependencies
 
