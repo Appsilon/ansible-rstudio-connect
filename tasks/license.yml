@@ -1,7 +1,7 @@
 ---
 
 - name: License activation (offline)
-  when: rstudio_connect_license_offline_key_b64_encoded | length > 0
+  when: rstudio_connect_license_offline_key_b64_encoded | default('') | length > 0
   notify: Restart rstudio-connect
   no_log: true
   block:
@@ -22,5 +22,5 @@
     /opt/rstudio-connect/bin/license-manager activate {{ rstudio_connect_license }}
   notify: Restart rstudio-connect
   register: license_output
-  when: rstudio_connect_license | length > 0
+  when: rstudio_connect_license | default('') | length > 0
   no_log: true
