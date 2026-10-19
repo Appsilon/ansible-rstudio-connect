@@ -15,7 +15,7 @@
     mode: 0600
   when:
     - rstudio_encryption_key is defined
-    - rstudio_encryption_key|length
+    - rstudio_encryption_key|length > 0
   tags:
     - rstudio-connect-encryption-key
 
