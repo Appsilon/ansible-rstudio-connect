@@ -8,6 +8,13 @@
         update_cache: true
       when: ansible_os_family == 'Debian'
 
+    - name: Enable CRB repo (needed for libtirpc-devel on RHEL9+)
+      ansible.builtin.command: dnf config-manager --set-enabled crb
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | int >= 9
+      changed_when: true
+
     - name: Install R from package
       ansible.builtin.dnf:
         name: R
