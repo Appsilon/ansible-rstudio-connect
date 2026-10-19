@@ -8,7 +8,6 @@
         - ansible_os_family == 'RedHat'
         - ansible_distribution_major_version | int >= 9
       changed_when: true
-      
     - name: Install R from package
       ansible.builtin.apt:
         name: r-base
