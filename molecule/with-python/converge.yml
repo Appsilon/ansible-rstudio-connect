@@ -7,6 +7,10 @@
       ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/main.yml"
     - name: Include vars for Python
       ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/with-python.yml"
+    - name: Pin older Connect version for Ubuntu 20.04
+      ansible.builtin.set.fact:
+        rstudio_connect_version: "2025.04.0"
+      when: ansible_distribution_release == 'focal'
   roles:
     - appsilon.python_install
     - ../../../
