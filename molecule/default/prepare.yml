@@ -3,13 +3,12 @@
   hosts: all
   tasks:
 
-    - name: Remove curl-minimal (conflicts with curl needed by the role)
-      ansible.builtin.dnf:
-        name: curl-minimal
-        state: absent
+    - name: Replace curl-minimal with full curl (conflicts with curl needed by the role)
+      ansible.builtin.command: dnf swap -y curl-minimal curl
       when:
         - ansible_os_family == 'RedHat'
         - ansible_distribution_major_version | int >= 9
+      changed_when: true
 
     - name: Enable CRB repo (needed for libtirpc-devel on RHEL9+)
       ansible.builtin.command: dnf config-manager --set-enabled crb
