@@ -81,8 +81,7 @@ jobs:
         run: pip install 'ansible-core${{ matrix.ansible-version }}' molecule molecule-plugins[docker] docker
 
       - name: Run Molecule tests
-        run: |
-          molecule test -s "${{ matrix.scenario }}"
+        run: molecule test -s "${{ matrix.scenario }}" ${{ matrix.distro == 'ubuntu2004' && '-- -e rstudio_connect_version=2025.04.0' || '' }}
         env:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
