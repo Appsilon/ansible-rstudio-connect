@@ -12,7 +12,7 @@
       ansible.builtin.command: dnf swap -y curl-minimal curl
       when:
         - ansible_os_family == 'RedHat'
-        - ansible_distribution_major_version | int >= 9
+        - ansible_distribution_major_version | int == 9
       changed_when: true
 
     - name: Enable CRB repo (needed for libtirpc-devel on RHEL9+)
