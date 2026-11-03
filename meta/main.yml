@@ -13,9 +13,12 @@ galaxy_info:
         - focal
         - jammy
         - noble
+        - resolute
     - name: EL
       versions:
         - "8"
+        - "9"
+        - "10"
   galaxy_tags:
     - development
     - system

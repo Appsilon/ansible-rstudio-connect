@@ -1,5 +1,12 @@
 # tasks file
 ---
+- name: Assert | Ubuntu 20.04 only supports Connect 2025.04.0 or older
+  ansible.builtin.assert:
+    that:
+      - rstudio_connect_version is version('2025.04.0', '<=')
+    fail_msg: "Posit no longer publishes Connect builds for Ubuntu 20.04 (focal) newer than 2025.04.0. Set rstudio_connect_version to 2025.04.0 or lower, or use a different OS."
+  when: ansible_distribution_release == 'focal'
+
 - name: Include variables
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:

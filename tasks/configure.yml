@@ -15,7 +15,7 @@
     mode: 0600
   when:
     - rstudio_encryption_key is defined
-    - rstudio_encryption_key|length
+    - rstudio_encryption_key|length > 0
   tags:
     - rstudio-connect-encryption-key
 
@@ -27,8 +27,8 @@
     group: root
     mode: 0600
   when:
-    - rstudio_connect_sso_saml_metadata_content_b64_encoded|d()
-    - rstudio_connect_sso_saml_metadata_file_path|d()
+    - rstudio_connect_sso_saml_metadata_content_b64_encoded|length > 0
+    - rstudio_connect_sso_saml_metadata_file_path|length > 0
 
 - name: Configure | create (server) configuration file
   ansible.builtin.template:
